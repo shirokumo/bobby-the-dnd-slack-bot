@@ -89,7 +89,7 @@ def handle_command(command, channel):
 
 if __name__ == "__main__":
         if slack_client.rtm_connect(with_team_state=False):
-        print("Slack Bot connected and running!")
+                print("Slack Bot connected and running!")
         # Read bot's user ID by calling Web API method `auth.test`
         bot_id = slack_client.api_call("auth.test")["user_id"]
         while True:
@@ -97,5 +97,5 @@ if __name__ == "__main__":
                 if command:
                         handle_command(command, channel)
                         time.sleep(RTM_READ_DELAY)
-        else:
-                print("Connection failed. Exception traceback printed above.")
+                else:
+                        print("Connection failed. Exception traceback printed above.")
