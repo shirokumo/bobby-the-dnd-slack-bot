@@ -1,1 +1,1 @@
-worker:python dnd_bot.py
+worker: python dnd_bot.py
