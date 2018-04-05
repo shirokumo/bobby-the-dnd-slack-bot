@@ -74,7 +74,7 @@ def handle_command(command, channel):
     # Finds and executes the given command, filling in response
     response = None
     # This is where you start to implement more commands!
-    if (command.lower).startswith('do'):
+    if 'do' in str(command.lower()):
         response = "Sure...write some more code then I can do that!"
 
     # Sends the response back to the channel
