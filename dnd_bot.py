@@ -6,6 +6,7 @@ import re
 import sqlite3
 import random
 import time
+import os
 
 # instantiate Slack client
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
