@@ -15,6 +15,7 @@ bot_id = None
 
 # constants
 RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
+EXAMPLE_COMMAND = 'do'
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 
 #define title_except() function for later use in search block
