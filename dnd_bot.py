@@ -74,13 +74,73 @@ def handle_command(command, channel):
 
         # Finds and executes the given command, filling in response
         response = None
-        # This is where you start to implement more commands!
+# This is where you start to implement more commands!
         if 'do' in str(command.lower()):
                 response = "Sure...write some more code then I can do that!"
 
+        #Spell lookup webpage scraping block
+        if "search" in str(command.lower())[:6] and ">" not in str(command):
+                searchRequest = str(command.lower())[7:]
+                searchRequest = title_except(searchRequest,articles)
+                searchRequest = searchRequest.replace(" ", "_")
+                searchRequest = searchRequest.replace("'", "%27")
+                url = "http://engl393-dnd5th.wikia.com/wiki/" + searchRequest
+                r = requests.get(url)
+                data = r.text
+                soup = BeautifulSoup(data)
+                searchSet = soup.find_all('div', {"class":"mw-content-ltr mw-content-text"})
+                if len(searchSet) > 0:
+                        for searchItem in searchSet:
+                            if len(searchItem.text) < 5000:
+                                response = searchItem.text + url
+                                self.send(message_object, thread_id=thread_id, thread_type=thread_type)
+                            else:
+                                subSearchSet = soup.find_all('span', {"class":"mw-headline"})
+                                message = ["The entry you searched for is too long for Slack. Here are the headings from that page, instead. Use '$search [page]>[heading]' to pull the info from a specific section of the entry. \n"]
+                                for subSearchItem in subSearchSet:
+                                    message.append(subSearchItem.text)
+                                message.append("\n" + url)
+                                response = "\n".join(message)
+                else:
+                        response = "I received your request, but I couldn't find that entry. I'm sorry. I have failed you."
+        #End spell lookup block
+        #Print specific heading and content drill-down block
+        if "search" in str(command.lower())[:6] and ">" in str(command):
+                search = str(command.lower())[8:]
+                search = search.split(">")
+                search = list(map(str.strip, search))
+                headingRequest = search[1]
+                title = title_except(headingRequest,articles)
+                headingRequest = title_except(headingRequest,articles)
+                headingRequest = headingRequest.replace(" ", ".*")
+                headingRequest = headingRequest.replace("'", ".E2.80.99")
+                searchRequest = search[0]
+                searchRequest = title_except(searchRequest,articles)
+                searchRequest = searchRequest.replace(" ", "_")
+                searchRequest = searchRequest.replace("'", "%27")
+                url = "http://engl393-dnd5th.wikia.com/wiki/" + searchRequest
+                r = requests.get(url)
+                data = r.text
+                soup = BeautifulSoup(data)
+                for section in soup.find_all('span',{"class":"mw-headline"},id=re.compile(headingRequest)):
+                        nextNode = section
+                        message = [title+"\n"]
+                        while True:
+                                nextNode = nextNode.next_element
+                                try:
+                                        tag_name = nextNode.name
+                                except AttributeError:
+                                        tag_name = ""
+                                if tag_name == "p":
+                                        message.append(nextNode.text)
+                                if tag_name == "h3":
+                                        break
+                                if tag_name == "h2":
+                                        break
+                        message.append(url)
+                        response = "\n".join(message)
 
-
-    # Sends the response back to the channel
+# Sends the response back to the channel
         slack_client.api_call(
         "chat.postMessage",
         channel=channel,
