@@ -81,10 +81,7 @@ def handle_command(command, channel):
         #Dice roller block
         if "roll" in str(command.lower())[:4]:
                 diceRoll = str(command)[5:]
-                print(diceRoll)
                 diceRollResult = dice.roll(diceRoll)
-                print(diceRollResult)
-                print(isinstance(diceRollResult, int))
         #The dice library returns a list of dice results, unless you do math to the roll
         #(like 2d4+4) in which case it returns a lone integer. Trying to sum an integer makes
         #Bobby unhappy. This is a dirty fix but since we're relying on output from the dice
@@ -98,7 +95,6 @@ def handle_command(command, channel):
         #Spell lookup webpage scraping block
         #SlackClient interprets '>' as '&gt;' - This is why the odd split choice below
         if "search" in str(command.lower())[:6] and "&gt;" not in str(command):
-                print(command)
                 searchRequest = str(command.lower())[7:]
                 searchRequest = title_except(searchRequest,articles)
                 searchRequest = searchRequest.replace(" ", "_")
@@ -108,7 +104,6 @@ def handle_command(command, channel):
                 #Currently url's with a single quote do not work - the title_except function capitalizes the
                 #letter after the quote. And wikia fucking hates that.
                 url = "http://engl393-dnd5th.wikia.com/wiki/" + searchRequest
-                print(url)
                 r = requests.get(url)
                 data = r.text
                 soup = BeautifulSoup(data)
@@ -129,7 +124,6 @@ def handle_command(command, channel):
         #End spell lookup block
         #Print specific heading and content drill-down block
         if "search" in str(command.lower())[:6] and "&gt;" in str(command.lower()):
-                print(command)
                 search = str(command.lower())[7:]
                 search = search.split("&gt;")
                 search = list(map(str.strip, search))
@@ -138,7 +132,6 @@ def handle_command(command, channel):
                 headingRequest = title_except(headingRequest,articles)
                 headingRequest = headingRequest.replace(" ", ".*")
                 headingRequest = headingRequest.replace("'", ".E2.80.99")
-                print(headingRequest)
                 searchRequest = search[0]
                 searchRequest = title_except(searchRequest,articles)
                 searchRequest = searchRequest.replace(" ", "_")
