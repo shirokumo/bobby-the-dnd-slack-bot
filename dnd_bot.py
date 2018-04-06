@@ -70,7 +70,7 @@ def handle_command(command, channel):
         Executes bot command if the command is known
         """
         # Default response is help text for the user
-        default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
+        default_response = "Not sure what you mean."
 
         # Finds and executes the given command, filling in response
         response = None
@@ -79,12 +79,19 @@ def handle_command(command, channel):
                 response = "Sure...write some more code then I can do that!"
 
         #Spell lookup webpage scraping block
-        if "search" in str(command.lower())[:6] and ">" not in str(command):
+        #SlackClient interprets '>' as '&gt;' - This is why the odd split choice below
+        if "search" in str(command.lower())[:6] and "&gt;" not in str(command):
+                print(command)
                 searchRequest = str(command.lower())[7:]
                 searchRequest = title_except(searchRequest,articles)
                 searchRequest = searchRequest.replace(" ", "_")
-                searchRequest = searchRequest.replace("'", "%27")
+                #searchRequest = searchRequest.replace("'", "%27") - When did wikia stop using %27 instead of single
+                #quotes in URLs? Well this line is useless now.
+                #
+                #Currently url's with a single quote do not work - the title_except function capitalizes the
+                #letter after the quote. And wikia fucking hates that.
                 url = "http://engl393-dnd5th.wikia.com/wiki/" + searchRequest
+                print(url)
                 r = requests.get(url)
                 data = r.text
                 soup = BeautifulSoup(data)
@@ -93,7 +100,6 @@ def handle_command(command, channel):
                         for searchItem in searchSet:
                             if len(searchItem.text) < 5000:
                                 response = searchItem.text + url
-                                self.send(message_object, thread_id=thread_id, thread_type=thread_type)
                             else:
                                 subSearchSet = soup.find_all('span', {"class":"mw-headline"})
                                 message = ["The entry you searched for is too long for Slack. Here are the headings from that page, instead. Use '$search [page]>[heading]' to pull the info from a specific section of the entry. \n"]
@@ -105,19 +111,21 @@ def handle_command(command, channel):
                         response = "I received your request, but I couldn't find that entry. I'm sorry. I have failed you."
         #End spell lookup block
         #Print specific heading and content drill-down block
-        if "search" in str(command.lower())[:6] and ">" in str(command):
-                search = str(command.lower())[8:]
-                search = search.split(">")
+        if "search" in str(command.lower())[:6] and "&gt;" in str(command.lower()):
+                print(command)
+                search = str(command.lower())[7:]
+                search = search.split("&gt;")
                 search = list(map(str.strip, search))
                 headingRequest = search[1]
                 title = title_except(headingRequest,articles)
                 headingRequest = title_except(headingRequest,articles)
                 headingRequest = headingRequest.replace(" ", ".*")
                 headingRequest = headingRequest.replace("'", ".E2.80.99")
+                print(headingRequest)
                 searchRequest = search[0]
                 searchRequest = title_except(searchRequest,articles)
                 searchRequest = searchRequest.replace(" ", "_")
-                searchRequest = searchRequest.replace("'", "%27")
+                #searchRequest = searchRequest.replace("'", "%27")
                 url = "http://engl393-dnd5th.wikia.com/wiki/" + searchRequest
                 r = requests.get(url)
                 data = r.text
@@ -157,5 +165,5 @@ if __name__ == "__main__":
                 if command:
                         handle_command(command, channel)
                         time.sleep(RTM_READ_DELAY)
-                else:
-                        print("Connection failed. Exception traceback printed above.")
+        else:
+                print("Connection failed. Exception traceback printed above.")
