@@ -96,13 +96,14 @@ def handle_command(command, channel):
         #SlackClient interprets '>' as '&gt;' - This is why the odd split choice below
         if "search" in str(command.lower())[:6] and "&gt;" not in str(command):
                 searchRequest = str(command.lower())[7:]
+                #If I can't fix the .titlecase method, I'll go the fuck around it
+                searchRequest = searchRequest.replace("’", "xxxxx")
                 searchRequest = title_except(searchRequest,articles)
+                searchRequest = searchRequest.replace("xxxxx", "'")
+                #Note that the first replace is the slightly tilted apostrophe, while
+                #the second replace turns it into a straight single quote. This is on
+                #purpose. URLs don't like tilty apostrophes. 
                 searchRequest = searchRequest.replace(" ", "_")
-                #searchRequest = searchRequest.replace("'", "%27") - When did wikia stop using %27 instead of single
-                #quotes in URLs? Well this line is useless now.
-                #
-                #Currently url's with a single quote do not work - the title_except function capitalizes the
-                #letter after the quote. And wikia fucking hates that.
                 url = "http://engl393-dnd5th.wikia.com/wiki/" + searchRequest
                 r = requests.get(url)
                 data = r.text
@@ -128,8 +129,16 @@ def handle_command(command, channel):
                 search = search.split("&gt;")
                 search = list(map(str.strip, search))
                 headingRequest = search[1]
-                title = title_except(headingRequest,articles)
+                #If I can't fix the .titlecase method, I'll go the fuck around it
+                title = headingRequest.replace("’", "xxxxx")
+                title = title_except(title,articles)
+                title = title.replace("xxxxx", "'")
+                headingRequest = headingRequest.replace("’", "xxxxx")
                 headingRequest = title_except(headingRequest,articles)
+                headingRequest = headingRequest.replace("xxxxx", "'")
+                #Note that the first replace is the slightly tilted apostrophe, while
+                #the second replace turns it into a straight single quote. This is on
+                #purpose. URLs don't like tilty apostrophes. 
                 headingRequest = headingRequest.replace(" ", ".*")
                 headingRequest = headingRequest.replace("'", ".E2.80.99")
                 searchRequest = search[0]
