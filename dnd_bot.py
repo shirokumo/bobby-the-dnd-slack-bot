@@ -81,7 +81,9 @@ def handle_command(command, channel):
         #Dice roller block
         if "roll" in str(command.lower())[:4]:
                 diceRoll = str(command)[5:]
+                print(diceRoll)
                 diceRollResult = dice.roll(diceRoll)
+                print(diceRollResult)
                 total = str(sum(diceRollResult))
                 response = str(diceRollResult) + '"\n"Total: ' + total
 
