@@ -84,8 +84,16 @@ def handle_command(command, channel):
                 print(diceRoll)
                 diceRollResult = dice.roll(diceRoll)
                 print(diceRollResult)
-                total = str(sum(diceRollResult))
-                response = str(diceRollResult) + '"\n"Total: ' + total
+                print(isinstance(diceRollResult, int))
+        #The dice library returns a list of dice results, unless you do math to the roll
+        #(like 2d4+4) in which case it returns a lone integer. Trying to sum an integer makes
+        #Bobby unhappy. This is a dirty fix but since we're relying on output from the dice
+        #library I don't think we'll see any user input break it
+                if isinstance(diceRollResult, int):
+                        response = 'Total: ' + str(diceRollResult)
+                else:
+                        total = str(sum(diceRollResult))
+                        response = str(diceRollResult) + '\nTotal: ' + total
 
         #Spell lookup webpage scraping block
         #SlackClient interprets '>' as '&gt;' - This is why the odd split choice below
