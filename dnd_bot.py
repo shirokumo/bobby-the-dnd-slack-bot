@@ -158,6 +158,11 @@ def handle_command(command, channel):
                         message.append(url)
                         response = "\n".join(message)
 
+        #Lets keep the simple, one-off shitposting lines between these blocks - TOP
+        if "thanks, bobby" in str(command.lower()):
+                response = 'No problem, boss.'
+        #Lets keep the simple, one-off shitposting lines between these blocks - BOTTOM
+
 # Sends the response back to the channel
         slack_client.api_call(
         "chat.postMessage",
