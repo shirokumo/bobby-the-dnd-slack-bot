@@ -79,7 +79,7 @@ def handle_command(command, channel):
                 response = "Sure...write some more code then I can do that!"
 
         #Dice roller block
-        if "roll" in str(command.lower())[:4]
+        if "roll" in str(command.lower())[:4]:
                 diceRoll = str(command)[5:]
                 diceRollResult = dice.roll(diceRoll)
                 total = str(sum(diceRollResult))
