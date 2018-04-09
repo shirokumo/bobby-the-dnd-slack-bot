@@ -60,7 +60,7 @@ def parse_bot_commands(slack_events):
                                         print('true')
                                 else:
                                         print('false')
-                                return keyword_message
+                                return keyword_message, event["channel"]
                         else:
                                 user_id, message = parse_direct_mention(event["text"])
                                 #test block#
