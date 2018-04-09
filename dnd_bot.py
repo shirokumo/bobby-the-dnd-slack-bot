@@ -52,10 +52,18 @@ def parse_bot_commands(slack_events):
         """
         for event in slack_events:
                 if event["type"] == "message" and not "subtype" in event:
-                        print(event["text"])
-                        user_id, message = parse_direct_mention(event["text"])
-                        if user_id == bot_id:
-                                return message, event["channel"]
+                        if any(key in event["text"] for key in keywords):
+                                keyword_message = event["text"]
+                                return keyword_message
+                        else:
+                                user_id, message = parse_direct_mention(event["text"])
+                                if user_id == bot_id:
+                                        return message, event["channel"]
+        #test block#
+        if keyword_message:
+                print('true')
+        else:
+                print('false')
                 
         return None, None
 
