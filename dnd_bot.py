@@ -93,7 +93,7 @@ def handle_command(command, channel):
         response = None
 
         #Dice roller block
-        if "roll" in str(command.lower())[:4]:
+        if "roll " in str(command.lower())[:5]:
                 diceRoll = str(command)[5:]
                 diceRollResult = dice.roll(diceRoll)
         #The dice library returns a list of dice results, unless you do math to the roll
@@ -108,7 +108,7 @@ def handle_command(command, channel):
 
         #Spell lookup webpage scraping block
         #SlackClient interprets '>' as '&gt;' - This is why the odd split choice below
-        if "search" in str(command.lower())[:6] and "&gt;" not in str(command):
+        if "search " in str(command.lower())[:7] and "&gt;" not in str(command):
                 searchRequest = str(command.lower())[7:]
                 #If I can't fix the .titlecase method, I'll go the fuck around it
                 searchRequest = searchRequest.replace("’", "xxxxx")
@@ -138,7 +138,7 @@ def handle_command(command, channel):
                         response = "I received your request, but I couldn't find that entry. I'm sorry. I have failed you."
         #End spell lookup block
         #Print specific heading and content drill-down block
-        if "search" in str(command.lower())[:6] and "&gt;" in str(command.lower()):
+        if "search " in str(command.lower())[:7] and "&gt;" in str(command.lower()):
                 search = str(command.lower())[7:]
                 search = search.split("&gt;")
                 search = list(map(str.strip, search))
