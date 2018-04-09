@@ -74,9 +74,6 @@ def handle_command(command, channel):
 
         # Finds and executes the given command, filling in response
         response = None
-# This is where you start to implement more commands!
-        if 'do' in str(command.lower()):
-                response = "Sure...write some more code then I can do that!"
 
         #Dice roller block
         if "roll" in str(command.lower())[:4]:
@@ -170,6 +167,9 @@ def handle_command(command, channel):
         #Lets keep the simple, one-off shitposting lines between these blocks - TOP
         if "thanks, bobby" in str(command.lower()):
                 response = 'No problem, boss.'
+
+        if "happy doggo" in str(command.lower()):
+                response = "https://imgur.com/r/gifs/LiAajZX"
         #Lets keep the simple, one-off shitposting lines between these blocks - BOTTOM
 
 # Sends the response back to the channel
