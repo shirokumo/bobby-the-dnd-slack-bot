@@ -51,6 +51,7 @@ def parse_bot_commands(slack_events):
         If its not found, then this function returns None, None.
         """
         for event in slack_events:
+                keyword_message = []
                 if event["type"] == "message" and not "subtype" in event:
                         if any(key in event["text"] for key in keywords):
                                 keyword_message = event["text"]
