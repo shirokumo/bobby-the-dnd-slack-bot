@@ -169,7 +169,7 @@ def handle_command(command, channel):
                 response = 'No problem, boss.'
 
         if "happy doggo" in str(command.lower()):
-                response = "https://imgur.com/r/gifs/LiAajZX"
+                response = "https://media.giphy.com/media/1Ju5mGZlWAqek/giphy.gif"
         #Lets keep the simple, one-off shitposting lines between these blocks - BOTTOM
 
 # Sends the response back to the channel
