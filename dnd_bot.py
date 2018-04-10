@@ -52,7 +52,7 @@ def parse_bot_commands(slack_events):
         """
         for event in slack_events:
                 if event["type"] == "message" and not "subtype" in event:
-                        if any(key in event["text"] for key in keywords):
+                        if any(key in event["text"].lower() for key in keywords):
                                 message = event["text"]
                                 return message, event["channel"]
                         else:
