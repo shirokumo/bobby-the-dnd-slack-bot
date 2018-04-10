@@ -170,6 +170,12 @@ def handle_command(command, channel):
                         message.append(url)
                         response = "\n".join(message)
 
+        #This block posts a link to the game map. We may expand this command to take the
+        #workspace or channel ID into account so multiple maps can be served if other
+        #people ever want to use Bobby for their games
+        if "map" in str(command.lower())[:3]:
+                response = "https://i.imgur.com/DNGQJrL.jpg"
+
         #Lets keep the simple, one-off shitposting lines between these blocks - TOP
         if "thanks, bobby" in str(command.lower()):
                 response = 'No problem, boss.'
@@ -180,8 +186,12 @@ def handle_command(command, channel):
         if "weed" in str(command.lower()):
                 response = ":weed:"
 
-        if "map" in str(command.lower())[:3]:
-                response = "https://i.imgur.com/DNGQJrL.jpg"
+        if "zoom" in str(command.lower())[:4]:
+                response = "https://thetradedesk.zoom.us/j/8057996021"
+
+        if "roll20" in str(command.lower())[:6]:
+                response = "https://app.roll20.net/campaigns/details/3147423/galactic-space-shenanigans"
+
         #Lets keep the simple, one-off shitposting lines between these blocks - BOTTOM
 
 # Sends the response back to the channel
