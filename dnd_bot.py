@@ -178,7 +178,7 @@ def handle_command(command, channel):
                 response = "https://media.giphy.com/media/1Ju5mGZlWAqek/giphy.gif"
 
         if "weed" in str(command.lower()):
-                response = str(command.lower())
+                response = ":weed:"
         #Lets keep the simple, one-off shitposting lines between these blocks - BOTTOM
 
 # Sends the response back to the channel
