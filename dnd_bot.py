@@ -42,7 +42,7 @@ def title_dash(s):
         return "-".join(final)
 
 articles = ['a', 'an', 'of', 'the', 'is', 'with', 'into', 'and', 'on']
-keywords = ['weed', 'happy doggo']
+keywords = ['weed', 'happy doggo', 'thanks, bobby']
 
 def parse_bot_commands(slack_events):
         """
@@ -179,6 +179,9 @@ def handle_command(command, channel):
 
         if "weed" in str(command.lower()):
                 response = ":weed:"
+
+        if "map" in str(command.lower())[:3]:
+                response = "https://i.imgur.com/DNGQJrL.jpg"
         #Lets keep the simple, one-off shitposting lines between these blocks - BOTTOM
 
 # Sends the response back to the channel
