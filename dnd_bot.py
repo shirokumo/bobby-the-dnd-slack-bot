@@ -95,7 +95,26 @@ def handle_command(command, channel):
                         total = str(sum(diceRollResult))
                         response = str(diceRollResult) + '\nTotal: ' + total
 
-        #Spell lookup webpage scraping block
+        #Spell lookup for pathfinder (Drop the game term search below when this is working)
+        if "spell " in str(command.lower())[:6]:
+                searchRequest = str(command.lower())[6:]
+                searchRequest = searchRequest.replace("'","")
+                searchRequest = searchRequest.replace(" ","-")
+                url = "https://www.d20pfsrd.com/magic/all-spells/" + searchRequest[0] + "/" + searchRequest
+                r = requests.get(url)
+                data = r.text
+                soup = BeautifulSoup(data)
+                searchSet = soup.find_all('div', {"class":"article-content"})
+                if len(searchSet) > 0:
+                        for searchItem in searchSet:
+                                if len(searchItem.text) < 5000:
+                                        response = searchItem.text + url
+                                else:
+                                        response = "The entry you searched for is too long for Slack. Here's the URL. Get it yo damn self: " + url
+                else:
+                        response = "I received your request, but I couldn't find that entry. I'm sorry, I have failed you."
+        #End spell lookup for pathfinder
+        #Game term lookup webpage scraping block
         #SlackClient interprets '>' as '&gt;' - This is why the odd split choice below
         if "search " in str(command.lower())[:7] and "&gt;" not in str(command):
                 searchRequest = str(command.lower())[7:]
