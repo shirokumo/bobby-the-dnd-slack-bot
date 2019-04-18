@@ -98,7 +98,7 @@ def handle_command(command, channel):
         #Spell lookup for pathfinder (Drop the game term search below when this is working)
         if "spell " in str(command.lower())[:6]:
                 searchRequest = str(command.lower())[6:]
-                searchRequest = searchRequest.replace("'","")
+                searchRequest = searchRequest.replace("'","-")
                 searchRequest = searchRequest.replace(" ","-")
                 url = "https://www.d20pfsrd.com/magic/all-spells/" + searchRequest[0] + "/" + searchRequest
                 r = requests.get(url)
