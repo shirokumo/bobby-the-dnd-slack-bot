@@ -42,7 +42,7 @@ def title_dash(s):
         return "-".join(final)
 
 articles = ['a', 'an', 'of', 'the', 'is', 'with', 'into', 'and', 'on']
-keywords = ['weed', 'happy doggo', 'thanks, bobby']
+keywords = ['weed', 'happy doggo', 'thanks, bobby', '$spell ']
 
 def parse_bot_commands(slack_events):
         """
@@ -96,8 +96,8 @@ def handle_command(command, channel):
                         response = str(diceRollResult) + '\nTotal: ' + total
 
         #Spell lookup for pathfinder (Drop the game term search below when this is working)
-        if "spell " in str(command.lower())[:6]:
-                searchRequest = str(command.lower())[6:]
+        if "$spell " in str(command.lower())[:7]:
+                searchRequest = str(command.lower())[7:]
                 searchRequest = searchRequest.replace("'","-")
                 searchRequest = searchRequest.replace(" ","-")
                 url = "https://www.d20pfsrd.com/magic/all-spells/" + searchRequest[0] + "/" + searchRequest
