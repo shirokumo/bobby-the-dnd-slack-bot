@@ -42,7 +42,7 @@ def title_dash(s):
         return "-".join(final)
 
 articles = ['a', 'an', 'of', 'the', 'is', 'with', 'into', 'and', 'on']
-keywords = ['weed', 'happy doggo', 'thanks, bobby', '$spell ']
+keywords = ['weed', 'happy doggo', 'thanks, bobby', '$roll ', '$spell ', '$map', '$zoom']
 
 def parse_bot_commands(slack_events):
         """
@@ -82,8 +82,8 @@ def handle_command(command, channel):
         response = None
 
         #Dice roller block
-        if "roll " in str(command.lower())[:5]:
-                diceRoll = str(command)[5:]
+        if "$roll " in str(command.lower())[:6]:
+                diceRoll = str(command)[6:]
                 diceRollResult = dice.roll(diceRoll)
         #The dice library returns a list of dice results, unless you do math to the roll
         #(like 2d4+4) in which case it returns a lone integer. Trying to sum an integer makes
@@ -114,85 +114,11 @@ def handle_command(command, channel):
                 else:
                         response = "I received your request, but I couldn't find that entry. I'm sorry, I have failed you."
         #End spell lookup for pathfinder
-        #Game term lookup webpage scraping block
-        #SlackClient interprets '>' as '&gt;' - This is why the odd split choice below
-        if "search " in str(command.lower())[:7] and "&gt;" not in str(command):
-                searchRequest = str(command.lower())[7:]
-                #If I can't fix the .titlecase method, I'll go the fuck around it
-                searchRequest = searchRequest.replace("’", "xxxxx")
-                searchRequest = title_except(searchRequest,articles)
-                searchRequest = searchRequest.replace("xxxxx", "'")
-                #Note that the first replace is the slightly tilted apostrophe, while
-                #the second replace turns it into a straight single quote. This is on
-                #purpose. URLs don't like tilty apostrophes. 
-                searchRequest = searchRequest.replace(" ", "_")
-                url = "http://engl393-dnd5th.wikia.com/wiki/" + searchRequest
-                r = requests.get(url)
-                data = r.text
-                soup = BeautifulSoup(data)
-                searchSet = soup.find_all('div', {"class":"mw-content-ltr mw-content-text"})
-                if len(searchSet) > 0:
-                        for searchItem in searchSet:
-                            if len(searchItem.text) < 5000:
-                                response = searchItem.text + url
-                            else:
-                                subSearchSet = soup.find_all('span', {"class":"mw-headline"})
-                                message = ["The entry you searched for is too long for Slack. Here are the headings from that page, instead. Use '$search [page]>[heading]' to pull the info from a specific section of the entry. \n"]
-                                for subSearchItem in subSearchSet:
-                                    message.append(subSearchItem.text)
-                                message.append("\n" + url)
-                                response = "\n".join(message)
-                else:
-                        response = "I received your request, but I couldn't find that entry. I'm sorry. I have failed you."
-        #End spell lookup block
-        #Print specific heading and content drill-down block
-        if "search " in str(command.lower())[:7] and "&gt;" in str(command.lower()):
-                search = str(command.lower())[7:]
-                search = search.split("&gt;")
-                search = list(map(str.strip, search))
-                headingRequest = search[1]
-                #If I can't fix the .titlecase method, I'll go the fuck around it
-                title = headingRequest.replace("’", "xxxxx")
-                title = title_except(title,articles)
-                title = title.replace("xxxxx", "'")
-                headingRequest = headingRequest.replace("’", "xxxxx")
-                headingRequest = title_except(headingRequest,articles)
-                headingRequest = headingRequest.replace("xxxxx", "'")
-                #Note that the first replace is the slightly tilted apostrophe, while
-                #the second replace turns it into a straight single quote. This is on
-                #purpose. URLs don't like tilty apostrophes. 
-                headingRequest = headingRequest.replace(" ", ".*")
-                headingRequest = headingRequest.replace("'", ".E2.80.99")
-                searchRequest = search[0]
-                searchRequest = title_except(searchRequest,articles)
-                searchRequest = searchRequest.replace(" ", "_")
-                #searchRequest = searchRequest.replace("'", "%27")
-                url = "http://engl393-dnd5th.wikia.com/wiki/" + searchRequest
-                r = requests.get(url)
-                data = r.text
-                soup = BeautifulSoup(data)
-                for section in soup.find_all('span',{"class":"mw-headline"},id=re.compile(headingRequest)):
-                        nextNode = section
-                        message = [title+"\n"]
-                        while True:
-                                nextNode = nextNode.next_element
-                                try:
-                                        tag_name = nextNode.name
-                                except AttributeError:
-                                        tag_name = ""
-                                if tag_name == "p":
-                                        message.append(nextNode.text)
-                                if tag_name == "h3":
-                                        break
-                                if tag_name == "h2":
-                                        break
-                        message.append(url)
-                        response = "\n".join(message)
 
         #This block posts a link to the game map. We may expand this command to take the
         #workspace or channel ID into account so multiple maps can be served if other
         #people ever want to use Bobby for their games
-        if "map" in str(command.lower())[:3]:
+        if "$map" in str(command.lower())[:4]:
                 response = "https://i.imgur.com/DNGQJrL.jpg"
 
         #Lets keep the simple, one-off shitposting lines between these blocks - TOP
@@ -205,7 +131,7 @@ def handle_command(command, channel):
         if "weed" in str(command.lower()):
                 response = ":weed:"
 
-        if "zoom" in str(command.lower())[:4]:
+        if "$zoom" in str(command.lower())[:5]:
                 response = "https://thetradedesk.zoom.us/j/8057996021"
 
         if "roll20" in str(command.lower())[:6]:
