@@ -121,8 +121,8 @@ def handle_command(command, channel):
                                                 "actions": [
                                                     {
                                                         "type": "button",
-                                                        "text": ":code: Go to spell page"
-                                                        "url": url
+                                                        "text": ":code: Go to spell page",
+                                                        "url": "" + url
                                                     }
                                                 ]
                                             }
