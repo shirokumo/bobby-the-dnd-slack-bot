@@ -158,8 +158,8 @@ def handle_command(command, channel):
         slack_client.api_call(
         "chat.postMessage",
         channel=channel,
-        text=response or default_response,
-        attachments=attach_json
+        text=response or default_response
+        #attachments=attach_json
         )
 
 if __name__ == "__main__":
