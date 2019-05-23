@@ -118,18 +118,31 @@ def handle_command(command, channel):
                                         attach_json = [
                                             {
                                                 "fallback": "Upgrade your Slack client to see message buttons.",
-                                                "color": "#CC0000",
+                                                "color": "#07511B",
                                                 "actions": [
                                                     {
                                                         "type": "button",
-                                                        "text": ":code: Go to spell page",
+                                                        "text": ":d20: Go to spell page",
                                                         "url": "" + url
                                                     }
                                                 ]
                                             }
                                         ]
                                 else:
-                                        response = "The entry you searched for is too long for Slack. Here's the URL. Get it yo damn self: " + url
+                                        response = "The entry you searched for is too long for Slack. Here's the URL. Get it yo damn self."
+                                        attach_json = [
+                                            {
+                                                "fallback": "Upgrade your Slack client to see message buttons.",
+                                                "color": "#07511B",
+                                                "actions": [
+                                                    {
+                                                        "type": "button",
+                                                        "text": ":d20: Go to spell page",
+                                                        "url": "" + url
+                                                    }
+                                                ]
+                                            }
+                                        ]
                 else:
                         response = "I received your request, but I couldn't find that entry. I'm sorry, I have failed you."
         #End spell lookup for pathfinder
