@@ -14,6 +14,9 @@ slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 # The bot's user ID in Slack: value is assigned after the bot starts up
 bot_id = None
 
+# Flask webserver listening for POSTs from Slack
+app = Flask(__name__)
+
 # constants
 RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
 EXAMPLE_COMMAND = 'do'
@@ -134,9 +137,6 @@ def handle_command(command, channel):
 
         if "$zoom" in str(command.lower())[:5]:
                 response = "https://thetradedesk.zoom.us/j/8057996021"
-
-        if "roll20" in str(command.lower())[:6]:
-                response = "https://app.roll20.net/campaigns/details/3147423/galactic-space-shenanigans"
 
         #Lets keep the simple, one-off shitposting lines between these blocks - BOTTOM
 
