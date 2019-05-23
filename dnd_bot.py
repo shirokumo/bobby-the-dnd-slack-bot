@@ -84,6 +84,7 @@ def handle_command(command, channel):
 
         # Finds and executes the given command, filling in response
         response = None
+        attach_json = None
 
         #Dice roller block
         if "$roll " in str(command.lower())[:6]:
@@ -112,7 +113,7 @@ def handle_command(command, channel):
                 if len(searchSet) > 0:
                         for searchItem in searchSet:
                                 if len(searchItem.text) < 5000:
-                                        response = searchItem.text + url
+                                        response = searchItem.text
                                         # JSON that builds a pretty button for the URL
                                         attach_json = [
                                             {
@@ -158,8 +159,8 @@ def handle_command(command, channel):
         slack_client.api_call(
         "chat.postMessage",
         channel=channel,
-        text=response or default_response
-        #attachments=attach_json
+        text=response or default_response,
+        attachments=attach_json
         )
 
 if __name__ == "__main__":
