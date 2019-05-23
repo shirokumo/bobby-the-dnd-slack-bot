@@ -113,6 +113,20 @@ def handle_command(command, channel):
                         for searchItem in searchSet:
                                 if len(searchItem.text) < 5000:
                                         response = searchItem.text + url
+                                        # JSON that builds a pretty button for the URL
+                                        attach_json = [
+                                            {
+                                                "fallback": "Upgrade your Slack client to see message buttons.",
+                                                "color": "#CC0000",
+                                                "actions": [
+                                                    {
+                                                        "type": "button",
+                                                        "text": ":code: Go to spell page"
+                                                        "url": url
+                                                    }
+                                                ]
+                                            }
+                                        ]
                                 else:
                                         response = "The entry you searched for is too long for Slack. Here's the URL. Get it yo damn self: " + url
                 else:
@@ -145,6 +159,7 @@ def handle_command(command, channel):
         "chat.postMessage",
         channel=channel,
         text=response or default_response
+        attachments=attach_json
         )
 
 if __name__ == "__main__":
