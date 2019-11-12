@@ -46,7 +46,7 @@ def title_dash(s):
         return "-".join(final)
 
 articles = ['a', 'an', 'of', 'the', 'is', 'with', 'into', 'and', 'on']
-keywords = ['weed', 'happy doggo', 'thanks, bobby', '$roll ', '$spell ', '$map', '$zoom']
+keywords = ['weed', 'happy doggo', 'thanks, bobby', '$roll ', '$spell ', '$map', '$zoom', 'oh no']
 
 def parse_bot_commands(slack_events):
         """
@@ -159,6 +159,9 @@ def handle_command(command, channel):
 
         if "happy doggo" in str(command.lower()):
                 response = "https://media.giphy.com/media/1Ju5mGZlWAqek/giphy.gif"
+
+        if "oh no" in str(command.lower()):
+                response = "https://i.imgur.com/ZiY3OMT.png"
 
         if "weed" in str(command.lower()):
                 response = ":weed:"
