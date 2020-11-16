@@ -51,7 +51,7 @@ keywords = ['zoop', 'weed', 'happy doggo', 'thanks, bobby', '$roll ', '$spell ',
 def parse_bot_commands(slack_events):
         """
         Parses a list of events coming from the Slack RTM API to find bot commands.
-        If a bot command is found, this function returns a tuple of command and channel. - Updated to return thruple including ts
+        If a bot command is found, this function returns a tuple of command and channel. - Updated to return thruple including thread_ts
         If its not found, then this function returns None, None.
         """
         for event in slack_events:
@@ -59,7 +59,7 @@ def parse_bot_commands(slack_events):
                         if any(key in event["text"].lower() for key in keywords):
                                 message = event["text"]
                                 print(event)
-                                return message, event["channel"], event["ts"]
+                                return message, event["channel"], event["thread_ts"]
                         else:
                                 user_id, message = parse_direct_mention(event["text"])
                                 if user_id == bot_id:
@@ -76,7 +76,7 @@ def parse_direct_mention(message_text):
         # the first group contains the username, the second group contains the remaining message
         return (matches.group(1), matches.group(2).strip()) if matches else (None, None)
 
-def handle_command(command, channel, ts):
+def handle_command(command, channel, thread_ts):
         """
         Executes bot command if the command is known
         """
@@ -179,7 +179,7 @@ def handle_command(command, channel, ts):
         slack_client.api_call(
         "chat.postMessage",
         channel=channel,
-        thread_ts=ts,
+        thread_ts=thread_ts,
         text=response or default_response,
         attachments=attach_json
         )
