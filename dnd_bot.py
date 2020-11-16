@@ -51,20 +51,20 @@ keywords = ['zoop', 'weed', 'happy doggo', 'thanks, bobby', '$roll ', '$spell ',
 def parse_bot_commands(slack_events):
         """
         Parses a list of events coming from the Slack RTM API to find bot commands.
-        If a bot command is found, this function returns a tuple of command and channel.
+        If a bot command is found, this function returns a tuple of command and channel. - Updated to return thruple including ts
         If its not found, then this function returns None, None.
         """
         for event in slack_events:
                 if event["type"] == "message" and not "subtype" in event:
                         if any(key in event["text"].lower() for key in keywords):
                                 message = event["text"]
-                                return message, event["channel"]
+                                return message, event["channel"], event["ts"]
                         else:
                                 user_id, message = parse_direct_mention(event["text"])
                                 if user_id == bot_id:
-                                        return message, event["channel"]
+                                        return message, event["channel"], event["ts"]
                 
-        return None, None
+        return None, None, None
 
 def parse_direct_mention(message_text):
         """
@@ -75,7 +75,7 @@ def parse_direct_mention(message_text):
         # the first group contains the username, the second group contains the remaining message
         return (matches.group(1), matches.group(2).strip()) if matches else (None, None)
 
-def handle_command(command, channel):
+def handle_command(command, channel, ts):
         """
         Executes bot command if the command is known
         """
@@ -178,6 +178,7 @@ def handle_command(command, channel):
         slack_client.api_call(
         "chat.postMessage",
         channel=channel,
+        thread_ts=ts,
         text=response or default_response,
         attachments=attach_json
         )
