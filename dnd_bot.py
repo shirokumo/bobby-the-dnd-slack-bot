@@ -46,7 +46,7 @@ def title_dash(s):
         return "-".join(final)
 
 articles = ['a', 'an', 'of', 'the', 'is', 'with', 'into', 'and', 'on']
-keywords = ['weed', 'happy doggo', 'thanks, bobby', '$roll ', '$spell ', '$map', '$zoom', 'oh no']
+keywords = ['zoop', 'weed', 'happy doggo', 'thanks, bobby', '$roll ', '$spell ', '$map', '$zoom', 'oh no']
 
 def parse_bot_commands(slack_events):
         """
@@ -165,6 +165,9 @@ def handle_command(command, channel):
 
         if "weed" in str(command.lower()):
                 response = ":weed:"
+                
+        if "zoop" in str(command.lower()):
+                response = ":point_right::sunglasses::point_right:"
 
         if "$zoom" in str(command.lower())[:5]:
                 response = "https://thetradedesk.zoom.us/j/8057996021"
