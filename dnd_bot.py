@@ -21,6 +21,7 @@ app = Flask(__name__)
 RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
 EXAMPLE_COMMAND = 'do'
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
+thread_ts = ""
 
 #define title_except() function for later use in search block
 #The wikia we're scraping cares very much about capitialization in its URLs, so we're going to title case search queries except for articles
@@ -56,14 +57,18 @@ def parse_bot_commands(slack_events):
         """
         for event in slack_events:
                 if event["type"] == "message" and not "subtype" in event:
-                        if any(key in event["text"].lower() for key in keywords):
+                        if any(key in event["text"].lower() for key in keywords) and not "thread_ts" in event:
+                                message = event["text"]
+                                print(event)
+                                return message, event["channel"]
+                        elif any(key in event["text"].lower() for key in keywords):
                                 message = event["text"]
                                 print(event)
                                 return message, event["channel"], event["thread_ts"]
                         else:
                                 user_id, message = parse_direct_mention(event["text"])
                                 if user_id == bot_id:
-                                        return message, event["channel"], event["ts"]
+                                        return message, event["channel"], event["thread_ts"]
                 
         return None, None, None
 
