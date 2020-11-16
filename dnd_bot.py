@@ -58,11 +58,11 @@ def parse_bot_commands(slack_events):
                 if event["type"] == "message" and not "subtype" in event:
                         if any(key in event["text"].lower() for key in keywords) and not "thread_ts" in event:
                                 message = event["text"]
-                                print(event)
+                                #print(event)
                                 return message, event["channel"], ""
                         elif any(key in event["text"].lower() for key in keywords):
                                 message = event["text"]
-                                print(event)
+                                #print(event)
                                 return message, event["channel"], event["thread_ts"]
                         else:
                                 user_id, message = parse_direct_mention(event["text"])
