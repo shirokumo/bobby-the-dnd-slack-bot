@@ -10,7 +10,7 @@ pyparsing==2.2.0
 requests==2.20.0
 six==1.11.0
 slackclient==1.2.1
-urllib3==1.24.2
+urllib3==1.26.5
 virtualenv==15.2.0
 virtualenv-clone==0.3.0
 websocket-client==0.47.0
