@@ -13,5 +13,5 @@ slackclient==1.2.1
 urllib3
 virtualenv==15.2.0
 virtualenv-clone==0.3.0
-websocket-client==0.47.0
+websocket-client
 Flask
