@@ -156,7 +156,7 @@ def handle_command(command, channel, thread_ts):
         #workspace or channel ID into account so multiple maps can be served if other
         #people ever want to use Bobby for their games
         if "$map" in str(command.lower())[:4]:
-                response = "https://files.slack.com/files-pri/T9X5Y0H29-F07TZQSCEFP/image.png"
+                response = "https://i.imgur.com/alm386F.png"
 
         #Lets keep the simple, one-off shitposting lines between these blocks - TOP
         if "thanks, bobby" in str(command.lower()):
